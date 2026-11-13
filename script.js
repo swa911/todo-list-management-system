@@ -8,6 +8,7 @@ const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
 const searchInput = document.getElementById("searchInput");
 const summary = document.getElementById("summary");
+const clearCompletedBtn = document.getElementById("clearCompletedBtn");
 
 // Save tasks in browser storage
 function saveTasks() {
@@ -51,6 +52,29 @@ function deleteTask(id) {
         displayTasks();
     }
 }
+
+// Clear all completed tasks
+function clearCompletedTasks() {
+
+    let completedCount = tasks.filter(task => task.completed).length;
+
+    if (completedCount === 0) {
+        alert("There are no completed tasks to clear!");
+        return;
+    }
+
+    let confirmClear = confirm(
+        `Are you sure you want to delete ${completedCount} completed task(s)?`
+    );
+
+    if (confirmClear) {
+        tasks = tasks.filter(task => !task.completed);
+
+        saveTasks();
+        displayTasks();
+    }
+}
+
 
 // Edit a task
 function editTask(id) {
@@ -172,6 +196,8 @@ function displayTasks() {
 
 // Add button functionality
 addBtn.addEventListener("click", addTask);
+// Clear completed tasks button
+clearCompletedBtn.addEventListener("click", clearCompletedTasks);
 
 // Add task by pressing Enter
 taskInput.addEventListener("keydown", function(event) {

@@ -197,4 +197,27 @@ button {
     .task {
         flex-wrap: wrap;
     }
+
+/* Clear completed tasks button */
+.clear-section {
+    text-align: right;
+    margin: 15px 0;
 }
+}
+
+#clearCompletedBtn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+#clearCompletedBtn:hover {
+    background-color: #c0392b;
+}
+
+
