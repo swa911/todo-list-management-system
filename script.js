@@ -176,7 +176,6 @@ taskInput.addEventListener("keydown", function(event) {
 searchInput.addEventListener("input", displayTasks);
 
 // Filter functionality
-
 // Improved task filtering
 document.querySelectorAll(".filter").forEach(button => {
     button.addEventListener("click", function() {
@@ -191,9 +190,33 @@ document.querySelectorAll(".filter").forEach(button => {
         this.classList.add("active");
         displayTasks();
     });
-
 });
-
 
 // Load saved tasks when page opens
 displayTasks();
+
+// Clear all completed tasks
+function clearCompletedTasks() {
+    let completedCount =
+        tasks.filter(task => task.completed).length;
+
+    if (completedCount === 0) {
+        alert("No completed tasks to clear!");
+        return;
+    }
+
+    let confirmClear = confirm(
+        "Are you sure you want to delete all completed tasks?"
+    );
+
+    if (confirmClear) {
+        tasks = tasks.filter(task => !task.completed);
+
+        saveTasks();
+        displayTasks();
+
+        alert("Completed tasks cleared successfully!");
+    }
+}
+document.getElementById("clearCompletedBtn")
+    .addEventListener("click", clearCompletedTasks);

@@ -198,3 +198,10 @@ button {
         flex-wrap: wrap;
     }
 }
+#clearCompletedBtn {
+    background: #ed354c;
+    color: white;
+}
+#clearCompletedBtn:hover {
+    background: #c92339;
+}
