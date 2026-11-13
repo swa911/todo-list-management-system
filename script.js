@@ -1,4 +1,5 @@
 const priorityInput = document.getElementById("priorityInput");
+const dueDateInput = document.getElementById("dueDateInput");
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 let currentFilter = "all";
@@ -24,15 +25,17 @@ function addTask() {
         return;
     }
 
-   tasks.push({
+  tasks.push({
     id: Date.now(),
     name: taskName,
     completed: false,
-    priority: priorityInput.value
+    priority: priorityInput.value,
+    dueDate: dueDateInput.value
 });
 
     taskInput.value = "";
     priorityInput.value = "Medium";
+    dueDateInput.value = "";
     saveTasks();
     displayTasks();
 }
@@ -150,6 +153,17 @@ function displayTasks() {
 
 let priority = document.createElement("span");
 
+let dueDate = document.createElement("span");
+
+dueDate.className = "due-date";
+
+if (task.dueDate) {
+    dueDate.textContent = "Due: " + task.dueDate;
+} else {
+    dueDate.textContent = "No deadline";
+}
+
+
 priority.className = "priority-badge";
 
 let taskPriority = task.priority || "Medium";
@@ -187,10 +201,11 @@ priority.classList.add(
             deleteTask(task.id);
         });
 
-       li.append(
+   li.append(
     checkbox,
     name,
     priority,
+    dueDate,
     status,
     editBtn,
     deleteBtn

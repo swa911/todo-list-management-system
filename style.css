@@ -252,3 +252,13 @@ button {
     background: white;
 }
 
+/* Task due date */
+.due-date {
+    font-size: 12px;
+    color: #3159e9;
+    background: #eaf0ff;
+    padding: 6px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
