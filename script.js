@@ -34,12 +34,22 @@ function addTask() {
     displayTasks();
 }
 
-// Delete a task
+// Delete a task with confirmation
 function deleteTask(id) {
-    tasks = tasks.filter(task => task.id !== id);
+    let task = tasks.find(task => task.id === id);
 
-    saveTasks();
-    displayTasks();
+    if (!task) return;
+
+    let confirmDelete = confirm(
+        `Are you sure you want to delete "${task.name}"?`
+    );
+
+    if (confirmDelete) {
+        tasks = tasks.filter(task => task.id !== id);
+
+        saveTasks();
+        displayTasks();
+    }
 }
 
 // Edit a task
