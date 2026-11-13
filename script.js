@@ -43,7 +43,6 @@ function deleteTask(id) {
 }
 
 // Edit a task
-
 function editTask(id) {
     let task = tasks.find(task => task.id === id);
     if (!task) {
@@ -69,12 +68,15 @@ function editTask(id) {
 // Mark task as completed or pending
 function toggleTask(id) {
     let task = tasks.find(task => task.id === id);
-
+    if (!task) {
+        alert("Task not found!");
+        return;
+    }
     task.completed = !task.completed;
-
     saveTasks();
     displayTasks();
 }
+
 
 // Display tasks
 function displayTasks() {
