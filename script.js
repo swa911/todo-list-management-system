@@ -1,4 +1,4 @@
-
+const priorityInput = document.getElementById("priorityInput");
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 let currentFilter = "all";
@@ -24,13 +24,15 @@ function addTask() {
         return;
     }
 
-    tasks.push({
-        id: Date.now(),
-        name: taskName,
-        completed: false
-    });
+   tasks.push({
+    id: Date.now(),
+    name: taskName,
+    completed: false,
+    priority: priorityInput.value
+});
 
     taskInput.value = "";
+    priorityInput.value = "Medium";
     saveTasks();
     displayTasks();
 }
@@ -146,6 +148,18 @@ function displayTasks() {
         name.className = "task-name";
         name.textContent = task.name;
 
+let priority = document.createElement("span");
+
+priority.className = "priority-badge";
+
+let taskPriority = task.priority || "Medium";
+
+priority.textContent = taskPriority;
+
+priority.classList.add(
+    taskPriority.toLowerCase() + "-priority"
+);
+
         let status = document.createElement("span");
         status.className = task.completed
             ? "status completed-status"
@@ -173,13 +187,14 @@ function displayTasks() {
             deleteTask(task.id);
         });
 
-        li.append(
-            checkbox,
-            name,
-            status,
-            editBtn,
-            deleteBtn
-        );
+       li.append(
+    checkbox,
+    name,
+    priority,
+    status,
+    editBtn,
+    deleteBtn
+);
 
         taskList.appendChild(li);
     });
