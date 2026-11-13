@@ -43,18 +43,28 @@ function deleteTask(id) {
 }
 
 // Edit a task
+
 function editTask(id) {
     let task = tasks.find(task => task.id === id);
-
-    let newName = prompt("Edit your task:", task.name);
-
-    if (newName !== null && newName.trim() !== "") {
-        task.name = newName.trim();
-
-        saveTasks();
-        displayTasks();
+    if (!task) {
+        alert("Task not found!");
+        return;
     }
+    let newName = prompt("Enter the updated task name:", task.name);
+    if (newName === null) {
+        return;
+    }
+    newName = newName.trim();
+    if (newName === "") {
+        alert("Task name cannot be empty!");
+        return;
+    }
+    task.name = newName;
+    saveTasks();
+    displayTasks();
+    alert("Task updated successfully!");
 }
+
 
 // Mark task as completed or pending
 function toggleTask(id) {
