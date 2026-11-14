@@ -198,3 +198,67 @@ button {
         flex-wrap: wrap;
     }
 }
+/* Clear completed tasks button */
+.clear-section {
+    text-align: right;
+    margin: 15px 0;
+}
+
+
+#clearCompletedBtn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+#clearCompletedBtn:hover {
+    background-color: #c0392b;
+}
+
+
+/* Task priority badges */
+.priority-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.high-priority {
+    background: #ffe1e6;
+    color: #e52e4b;
+}
+
+.medium-priority {
+    background: #fff0cc;
+    color: #b77900;
+}
+
+.low-priority {
+    background: #d9f4e2;
+    color: #16843b;
+}
+
+#priorityInput {
+    padding: 12px;
+    border: 1px solid #d6dbea;
+    border-radius: 10px;
+    font-size: 14px;
+    background: white;
+}
+
+/* Task due date */
+.due-date {
+    font-size: 12px;
+    color: #3159e9;
+    background: #eaf0ff;
+    padding: 6px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
