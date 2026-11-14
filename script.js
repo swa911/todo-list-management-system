@@ -1,4 +1,5 @@
-
+const priorityInput = document.getElementById("priorityInput");
+const dueDateInput = document.getElementById("dueDateInput");
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 let currentFilter = "all";
@@ -8,6 +9,7 @@ const addBtn = document.getElementById("addBtn");
 const taskList = document.getElementById("taskList");
 const searchInput = document.getElementById("searchInput");
 const summary = document.getElementById("summary");
+const clearCompletedBtn = document.getElementById("clearCompletedBtn");
 
 // Save tasks in browser storage
 function saveTasks() {
@@ -23,24 +25,61 @@ function addTask() {
         return;
     }
 
-    tasks.push({
-        id: Date.now(),
-        name: taskName,
-        completed: false
-    });
+  tasks.push({
+    id: Date.now(),
+    name: taskName,
+    completed: false,
+    priority: priorityInput.value,
+    dueDate: dueDateInput.value
+});
 
     taskInput.value = "";
+    priorityInput.value = "Medium";
+    dueDateInput.value = "";
     saveTasks();
     displayTasks();
 }
 
-// Delete a task
+// Delete a task with confirmation
 function deleteTask(id) {
-    tasks = tasks.filter(task => task.id !== id);
+    let task = tasks.find(task => task.id === id);
 
-    saveTasks();
-    displayTasks();
+    if (!task) return;
+
+    let confirmDelete = confirm(
+        `Are you sure you want to delete "${task.name}"?`
+    );
+
+    if (confirmDelete) {
+        tasks = tasks.filter(task => task.id !== id);
+
+        saveTasks();
+        displayTasks();
+    }
 }
+
+// Clear all completed tasks
+function clearCompletedTasks() {
+
+    let completedCount = tasks.filter(task => task.completed).length;
+
+    if (completedCount === 0) {
+        alert("There are no completed tasks to clear!");
+        return;
+    }
+
+    let confirmClear = confirm(
+        `Are you sure you want to delete ${completedCount} completed task(s)?`
+    );
+
+    if (confirmClear) {
+        tasks = tasks.filter(task => !task.completed);
+
+        saveTasks();
+        displayTasks();
+    }
+}
+
 
 // Edit a task
 function editTask(id) {
@@ -115,6 +154,30 @@ function displayTasks() {
         let name = document.createElement("span");
         name.className = "task-name";
         name.textContent = task.name;
+
+let priority = document.createElement("span");
+
+let dueDate = document.createElement("span");
+
+dueDate.className = "due-date";
+
+if (task.dueDate) {
+    dueDate.textContent = "Due: " + task.dueDate;
+} else {
+    dueDate.textContent = "No deadline";
+}
+
+
+priority.className = "priority-badge";
+
+let taskPriority = task.priority || "Medium";
+
+priority.textContent = taskPriority;
+
+priority.classList.add(
+    taskPriority.toLowerCase() + "-priority"
+);
+
         let status = document.createElement("span");
         status.className = task.completed
             ? "status completed-status"
@@ -141,13 +204,15 @@ function displayTasks() {
             deleteTask(task.id);
         });
 
-        li.append(
-            checkbox,
-            name,
-            status,
-            editBtn,
-            deleteBtn
-        );
+   li.append(
+    checkbox,
+    name,
+    priority,
+    dueDate,
+    status,
+    editBtn,
+    deleteBtn
+);
 
         taskList.appendChild(li);
     });
@@ -164,6 +229,8 @@ function displayTasks() {
 
 // Add button functionality
 addBtn.addEventListener("click", addTask);
+// Clear completed tasks button
+clearCompletedBtn.addEventListener("click", clearCompletedTasks);
 
 // Add task by pressing Enter
 taskInput.addEventListener("keydown", function(event) {
