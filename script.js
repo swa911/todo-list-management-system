@@ -84,39 +84,47 @@ function clearCompletedTasks() {
 // Edit a task
 function editTask(id) {
     let task = tasks.find(task => task.id === id);
-
-    let newName = prompt("Edit your task:", task.name);
-
-    if (newName !== null && newName.trim() !== "") {
-        task.name = newName.trim();
-
-        saveTasks();
-        displayTasks();
+    if (!task) {
+        alert("Task not found!");
+        return;
     }
+    let newName = prompt("Enter the updated task name:", task.name);
+    if (newName === null) {
+        return;
+    }
+    newName = newName.trim();
+    if (newName === "") {
+        alert("Task name cannot be empty!");
+        return;
+    }
+    task.name = newName;
+    saveTasks();
+    displayTasks();
+    alert("Task updated successfully!");
 }
+
 
 // Mark task as completed or pending
 function toggleTask(id) {
     let task = tasks.find(task => task.id === id);
-
+    if (!task) {
+        alert("Task not found!");
+        return;
+    }
     task.completed = !task.completed;
-
     saveTasks();
     displayTasks();
 }
+
 
 // Display tasks
 function displayTasks() {
 
     taskList.innerHTML = "";
-
     let searchText = searchInput.value.toLowerCase();
-
     let filteredTasks = tasks.filter(task => {
-
         let matchesSearch = task.name.toLowerCase()
             .includes(searchText);
-
         let matchesFilter =
             currentFilter === "all" ||
             (currentFilter === "completed" && task.completed) ||
@@ -131,18 +139,14 @@ function displayTasks() {
     }
 
     filteredTasks.forEach(task => {
-
         let li = document.createElement("li");
-
         li.className = task.completed
             ? "task completed"
             : "task";
-
         let checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.className = "task-check";
         checkbox.checked = task.completed;
-
         checkbox.addEventListener("change", () => {
             toggleTask(task.id);
         });
@@ -178,7 +182,6 @@ priority.classList.add(
         status.className = task.completed
             ? "status completed-status"
             : "status pending-status";
-
         status.textContent = task.completed
             ? "Completed"
             : "Pending";
@@ -240,21 +243,47 @@ taskInput.addEventListener("keydown", function(event) {
 searchInput.addEventListener("input", displayTasks);
 
 // Filter functionality
+// Improved task filtering
 document.querySelectorAll(".filter").forEach(button => {
-
     button.addEventListener("click", function() {
-
-        currentFilter = this.dataset.filter;
-
+        const selectedFilter = this.dataset.filter;
+        if (!["all", "pending", "completed"].includes(selectedFilter)) {
+            return;
+        }
+        currentFilter = selectedFilter;
         document.querySelectorAll(".filter").forEach(btn => {
             btn.classList.remove("active");
         });
-
         this.classList.add("active");
-
         displayTasks();
     });
 });
 
 // Load saved tasks when page opens
 displayTasks();
+
+// Clear all completed tasks
+function clearCompletedTasks() {
+    let completedCount =
+        tasks.filter(task => task.completed).length;
+
+    if (completedCount === 0) {
+        alert("No completed tasks to clear!");
+        return;
+    }
+
+    let confirmClear = confirm(
+        "Are you sure you want to delete all completed tasks?"
+    );
+
+    if (confirmClear) {
+        tasks = tasks.filter(task => !task.completed);
+
+        saveTasks();
+        displayTasks();
+
+        alert("Completed tasks cleared successfully!");
+    }
+}
+document.getElementById("clearCompletedBtn")
+    .addEventListener("click", clearCompletedTasks);
